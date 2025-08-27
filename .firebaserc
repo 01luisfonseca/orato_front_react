@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "orato-service"
+  },
+  "targets": {
+    "orato-service": {
+      "hosting": {
+        "development": [
+          "orato-service-dev"
+        ],
+        "production": [
+          "orato-service"
+        ]
+      }
+    }
+  }
+}
