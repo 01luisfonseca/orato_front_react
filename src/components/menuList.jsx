@@ -10,12 +10,14 @@ import {
   Span,
   VStack,
 } from "@chakra-ui/react";
-import { useAuthStore } from "../store/auth.store";
+import { useAuthStore } from "@/store/auth.store";
+import { useMenuStore } from "@/store/menu.store";
 import { toaster } from "@/components/ui/toaster";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
-export const MenuList = ({ open, setOpen }) => {
+export const MenuList = () => {
+  const { open, setOpen } = useMenuStore();
   const navigate = useNavigate();
   const { user, signOut } = useAuthStore();
   const [value, setValue] = useState(["second-item"]);

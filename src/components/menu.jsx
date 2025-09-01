@@ -2,11 +2,11 @@ import { Flex, Separator, Avatar, Spacer } from "@chakra-ui/react";
 import logo from "/orato.png";
 import { useNavigate } from "react-router";
 import { CiMenuBurger } from "react-icons/ci";
-import { useState } from "react";
+import { useMenuStore } from "@/store/menu.store";
 import { MenuList } from "./menuList";
 
 export const Menu = () => {
-  const [open, setOpen] = useState(false);
+  const { setOpen } = useMenuStore();
   const navigate = useNavigate();
 
   return (
@@ -34,7 +34,7 @@ export const Menu = () => {
         </Flex>
       </Flex>
       <Separator orientation="horizontal" />
-      <MenuList open={open} setOpen={setOpen} />
+      <MenuList />
     </>
   );
 };
