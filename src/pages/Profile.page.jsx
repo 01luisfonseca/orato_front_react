@@ -20,8 +20,6 @@ export const Profile = () => {
   const fullName =
     `${user?.displayName || ""}` || `${user?.email || ""}`.trim();
 
-  console.log(user?.profile);
-
   return (
     <Layout>
       <Container maxW="container.md" py={8}>
