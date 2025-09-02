@@ -13,6 +13,7 @@ import {
 import { useAuthStore } from "@/store/auth.store";
 import { useMenuStore } from "@/store/menu.store";
 import { toaster } from "@/components/ui/toaster";
+import { ColorModeButton } from "@/components/ui/color-mode";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
@@ -53,10 +54,14 @@ export const MenuList = () => {
             <Drawer.Body>
               <VStack>
                 {user && (
-                  <Heading size={"sm"} mb={5}>
-                    Hola {user?.email}
-                  </Heading>
+                  <>
+                    <Heading size={"sm"}>Hola {user?.email}</Heading>
+                    <Heading size={"xs"} mb={5} cursor={"pointer"}>
+                      <Link to={"/profile"}>Ver perfil</Link>
+                    </Heading>
+                  </>
                 )}
+                <ColorModeButton />
                 <Link to={"/"}>
                   <Span>Inicio</Span>
                 </Link>

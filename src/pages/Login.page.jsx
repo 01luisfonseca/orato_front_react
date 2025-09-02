@@ -64,97 +64,102 @@ export const Login = () => {
     }
   }, [errorMessage]);
 
-  return loading ? (
-    <Flex
-      flexDirection="column"
-      height="100vh"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Spinner size="xl" />
-    </Flex>
-  ) : (
-    <Flex
-      flexDirection="column"
-      height="100vh"
-      backgroundColor="gray.50"
-      justifyContent="center"
-      alignItems="center"
-      padding={4}
-    >
-      <Stack
-        flexDir="column"
-        mb="2"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Avatar.Root
-          size={"2xl"}
-          cursor={"pointer"}
-          onClick={() => navigate("/")}
+  return (
+    <Box bg={{ base: "gray.50", _dark: "gray.600" }}>
+      {loading ? (
+        <Flex
+          flexDirection="column"
+          height="100vh"
+          justifyContent="center"
+          alignItems="center"
         >
-          <Avatar.Fallback name="Orato" bg={"teal.400"} padding={4} />
-          <Avatar.Image src={logo} />
-        </Avatar.Root>
-        <Heading color="teal.400">Iniciar Sesión</Heading>
-        <Box minW={{ base: "90%", md: "468px" }}>
-          <form onSubmit={handleSubmit}>
-            <Fieldset.Root size="lg" invalid>
-              <Fieldset.Content>
-                <Field.Root orientation="horizontal">
-                  <InputGroup
-                    background={"white"}
-                    startElement={<CFaUserAlt color="gray.300" />}
-                  >
-                    <Input
-                      type="email"
-                      placeholder="Correo válido"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </InputGroup>
-                </Field.Root>
-                <Field.Root orientation="horizontal">
-                  <InputGroup
-                    background={"white"}
-                    startElement={<CFaLock color="gray.300" />}
-                  >
-                    <PasswordInput
-                      placeholder="Contraseña"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </InputGroup>
-                  <Field.HelperText>
-                    <Link onClick={handleRecoveryClick}>
-                      Olvidaste la contraseña?
-                    </Link>
-                  </Field.HelperText>
-                </Field.Root>
-                {errorMessage && (
-                  <Alert.Root status="error">
-                    <Alert.Indicator />
-                    <Alert.Content>
-                      <Alert.Title>Error al iniciar sesión</Alert.Title>
-                      <Alert.Description>{errorMessage}</Alert.Description>
-                    </Alert.Content>
-                  </Alert.Root>
-                )}
-                <Button
-                  borderRadius={0}
-                  type="submit"
-                  variant="solid"
-                  colorPalette="teal"
-                  width="full"
-                  disabled={isLoading}
-                >
-                  {isLoading ? <Spinner /> : "Entrar"}
-                </Button>
-              </Fieldset.Content>
-            </Fieldset.Root>
-          </form>
-        </Box>
-      </Stack>
-    </Flex>
+          <Spinner size="xl" />
+        </Flex>
+      ) : (
+        <Flex
+          flexDirection="column"
+          height="100vh"
+          justifyContent="center"
+          alignItems="center"
+          padding={4}
+        >
+          <Stack
+            flexDir="column"
+            mb="2"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Avatar.Root
+              size={"2xl"}
+              cursor={"pointer"}
+              onClick={() => navigate("/")}
+            >
+              <Avatar.Fallback name="Orato" bg={"teal.400"} padding={4} />
+              <Avatar.Image src={logo} />
+            </Avatar.Root>
+            <Heading color="teal.400">Iniciar Sesión</Heading>
+            <Box minW={{ base: "90%", md: "468px" }}>
+              <form onSubmit={handleSubmit}>
+                <Fieldset.Root size="lg" invalid>
+                  <Fieldset.Content>
+                    <Field.Root orientation="horizontal">
+                      <InputGroup
+                        background={"white"}
+                        startElement={<CFaUserAlt color="gray.300" />}
+                      >
+                        <Input
+                          type="email"
+                          bg={{ base: "white", _dark: "gray.700" }}
+                          placeholder="Correo válido"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </InputGroup>
+                    </Field.Root>
+                    <Field.Root orientation="horizontal">
+                      <InputGroup
+                        background={"white"}
+                        startElement={<CFaLock color="gray.300" />}
+                      >
+                        <PasswordInput
+                          placeholder="Contraseña"
+                          bg={{ base: "white", _dark: "gray.700" }}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </InputGroup>
+                      <Field.HelperText>
+                        <Link onClick={handleRecoveryClick}>
+                          Olvidaste la contraseña?
+                        </Link>
+                      </Field.HelperText>
+                    </Field.Root>
+                    {errorMessage && (
+                      <Alert.Root status="error">
+                        <Alert.Indicator />
+                        <Alert.Content>
+                          <Alert.Title>Error al iniciar sesión</Alert.Title>
+                          <Alert.Description>{errorMessage}</Alert.Description>
+                        </Alert.Content>
+                      </Alert.Root>
+                    )}
+                    <Button
+                      borderRadius={0}
+                      type="submit"
+                      variant="solid"
+                      colorPalette="teal"
+                      width="full"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? <Spinner /> : "Entrar"}
+                    </Button>
+                  </Fieldset.Content>
+                </Fieldset.Root>
+              </form>
+            </Box>
+          </Stack>
+        </Flex>
+      )}
+    </Box>
   );
 };
