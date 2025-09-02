@@ -5,7 +5,6 @@ import {
   CloseButton,
   Heading,
   Separator,
-  Box,
   Accordion,
   Span,
   VStack,

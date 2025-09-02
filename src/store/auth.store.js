@@ -6,12 +6,17 @@ import {
   signOut,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import { ProfileService } from "@/services/profile.service";
 
 export const useAuthStore = create((set) => ({
   user: null,
   loading: true,
 
-  setUser: (user) => {
+  setUser: async (user) => {
+    if (user) {
+      const profile = new ProfileService(user.accessToken);
+      user.profile = await profile.read();
+    }
     set({ user, loading: false });
   },
 
