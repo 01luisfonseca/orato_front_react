@@ -9,6 +9,9 @@ import { Profile } from "./pages/Profile.page";
 import ProtectedRoute from "./components/protectedRoute";
 import { NotFound } from "./pages/404/page";
 
+//Auth routes
+import { Users } from "./pages/auth/users.page";
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -32,7 +35,9 @@ export function AppRoutes() {
             <Authorized />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="users" element={<Users />} />
+      </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

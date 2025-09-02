@@ -22,9 +22,23 @@ export const MenuList = () => {
   const { user, signOut } = useAuthStore();
   const [value, setValue] = useState(["second-item"]);
   const [items] = useState([
-    { value: "first-item", title: "First Item", text: "Some value 1..." },
-    { value: "second-item", title: "Second Item", text: "Some value 2..." },
-    { value: "third-item", title: "Third Item", text: "Some value 3..." },
+    {
+      value: "elementals",
+      title: "Acciones básicas",
+      elements: [
+        { title: "Usuarios", to: "/auth/users" },
+        { title: "Congregaciones", to: "/auth/congregations" },
+        { title: "Publicadores", to: "/auth/publishers" },
+      ],
+    },
+    {
+      value: "assignments",
+      title: "Creación de asignaciones",
+      elements: [
+        { title: "Asignaciones", to: "/auth/assignments" },
+        { title: "Tareas", to: "/auth/tasks" },
+      ],
+    },
   ]);
 
   const handleLogout = async () => {
@@ -88,7 +102,11 @@ export const MenuList = () => {
                           <Accordion.ItemIndicator />
                         </Accordion.ItemTrigger>
                         <Accordion.ItemContent>
-                          <Accordion.ItemBody>{item.text}</Accordion.ItemBody>
+                          {item.elements.map((element, idx) => (
+                            <Accordion.ItemBody key={idx}>
+                              <Link to={element.to}>{element.title}</Link>
+                            </Accordion.ItemBody>
+                          ))}
                         </Accordion.ItemContent>
                       </Accordion.Item>
                     ))}
