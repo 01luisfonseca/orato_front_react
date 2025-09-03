@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
 import googleConfig from "eslint-config-google";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default defineConfig([
   globalIgnores(["dist"]),
@@ -24,6 +25,7 @@ export default defineConfig([
       reactHooks,
       reactRefresh,
       google: googleConfig,
+      "@tanstack/query": pluginQuery,
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -35,6 +37,7 @@ export default defineConfig([
       },
     },
     rules: {
+      "@tanstack/query/exhaustive-deps": "error",
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
       "no-restricted-globals": ["error", "name", "length"],
       "prefer-arrow-callback": "error",

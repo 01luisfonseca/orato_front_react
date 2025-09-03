@@ -1,22 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import { Container, Heading, VStack } from "@chakra-ui/react";
 import { useAuthStore } from "@/store/auth.store";
 import { UsersService } from "@/services/users.service";
-import { useEffect, useState } from "react";
 
 export const Users = () => {
   const { user } = useAuthStore();
-
-  const usersService = new UsersService(user.accessToken);
-
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await usersService.read();
-      setUsers(data);
-    };
-    fetchUsers();
-  }, []);
+  const query = useQuery({
+    queryKey: ["users", user.accessToken],
+    queryFn: () => {
+      const serviceInstance = new UsersService(user.accessToken);
+      return serviceInstance.read();
+    },
+  });
 
   return (
     <Container maxW="container.md" py={8}>
@@ -25,6 +20,17 @@ export const Users = () => {
           Usuarios
         </Heading>
         {/* Lista de usuarios desde el servicio. */}
+        {query.isPending && <p>Cargando usuarios...</p>}
+        {query.isError && (
+          <p>Error al cargar usuarios: {query.error.message}</p>
+        )}
+        {query.data && Array.isArray(query.data.data) && (
+          <ul>
+            {query.data.data.map((user) => (
+              <li key={user.id}>{user.email}</li>
+            ))}
+          </ul>
+        )}
       </VStack>
     </Container>
   );
