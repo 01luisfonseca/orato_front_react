@@ -23,16 +23,21 @@ import { dateString } from "@/config/dateString";
 import { MdDeleteOutline } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { useEffect } from "react";
 
 export const Users = () => {
-  const { user } = useAuthStore();
+  const { token, setValidToken } = useAuthStore();
   const query = useQuery({
-    queryKey: ["users", user.accessToken],
+    queryKey: ["users", token],
     queryFn: () => {
-      const serviceInstance = new UsersService(user.accessToken);
+      const serviceInstance = new UsersService(token);
       return serviceInstance.read();
     },
   });
+
+  useEffect(() => {
+    setValidToken();
+  }, [setValidToken]);
 
   return (
     <Container maxW="container.md" py={8}>

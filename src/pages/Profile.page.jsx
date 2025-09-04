@@ -12,13 +12,21 @@ import {
 import { Layout } from "../components/layout";
 import { useAuthStore } from "@/store/auth.store";
 import { dateString } from "@/config/dateString";
+import { useEffect, useState } from "react";
 
 export const Profile = () => {
-  const { user } = useAuthStore();
+  const { user, updateProfile } = useAuthStore();
+  const [profile, setProfile] = useState({});
+  const [fullName, setFullName] = useState("");
 
-  const profile = user?.profile || {};
-  const fullName =
-    `${user?.displayName || ""}` || `${user?.email || ""}`.trim();
+  useEffect(() => {
+    setProfile(user?.profile || {});
+    setFullName(`${user?.displayName || ""}` || `${user?.email || ""}`.trim());
+  }, [user]);
+
+  useEffect(() => {
+    updateProfile();
+  }, [updateProfile]);
 
   return (
     <Layout>
