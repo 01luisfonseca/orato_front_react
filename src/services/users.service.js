@@ -10,7 +10,25 @@ export class UsersService {
   }
 
   async read(filter) {
-    const response = await fetch(this.server + this.path, {
+    const url = new URL(this.server + this.path);
+    if (filter) {
+      Object.keys(filter).forEach((key) => {
+        if (
+          typeof filter[key] === "object" &&
+          filter[key] !== null &&
+          (Array.isArray(filter[key]) || Object.keys(filter[key]).length)
+        ) {
+          url.searchParams.append(key, JSON.stringify(filter[key]));
+        } else if (
+          filter[key] !== undefined &&
+          filter[key] !== null &&
+          typeof filter[key] !== "object"
+        ) {
+          url.searchParams.append(key, filter[key]);
+        }
+      });
+    }
+    const response = await fetch(url.toString(), {
       method: "GET",
       headers: {
         Authorization: `Bearer ${this.token}`,

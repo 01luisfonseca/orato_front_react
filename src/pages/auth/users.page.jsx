@@ -23,21 +23,55 @@ import { dateString } from "@/config/dateString";
 import { MdDeleteOutline } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 export const Users = () => {
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+  const [filter, setFilter] = useState({ where: {}, take: 5, skip: 0 });
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [totalCount, setTotalCount] = useState(0);
   const { token, setValidToken } = useAuthStore();
   const query = useQuery({
-    queryKey: ["users", token],
-    queryFn: () => {
+    queryKey: ["users", { token, filter, page, pageSize }],
+    queryFn: ({ queryKey }) => {
+      const [_key, { token, filter }] = queryKey;
       const serviceInstance = new UsersService(token);
-      return serviceInstance.read();
+      return serviceInstance.read(filter);
     },
   });
 
   useEffect(() => {
     setValidToken();
   }, [setValidToken]);
+
+  useEffect(() => {
+    if (debouncedSearch === "" || debouncedSearch.length >= 3) {
+      if (debouncedSearch === "") {
+        setFilter((prev) => ({ ...prev, where: {} }));
+        return;
+      } else {
+        setFilter((prev) => ({
+          ...prev,
+          where: { email: { contains: debouncedSearch, mode: "insensitive" } },
+        }));
+      }
+    }
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    setFilter((prev) => ({
+      ...prev,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }));
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    setTotalCount(query.data?.total || 0);
+  }, [query.data]);
 
   return (
     <Container maxW="container.md" py={8}>
@@ -47,7 +81,12 @@ export const Users = () => {
         </Heading>
         <Field.Root mb={4}>
           <Field.Label>Buscador</Field.Label>
-          <Input placeholder="Ingrese el texto a buscar" variant={"flushed"} />
+          <Input
+            placeholder="Ingrese el texto a buscar"
+            variant={"flushed"}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </Field.Root>
         {/* Lista de usuarios desde el servicio. */}
         {query.isPending && (
@@ -113,9 +152,17 @@ export const Users = () => {
             </SimpleGrid>
             <HStack justify="center">
               <Pagination.Root
-                count={50}
-                pageSize={5}
+                count={Math.ceil(totalCount / pageSize)}
+                pageSize={pageSize}
                 defaultPage={1}
+                onPageChange={(p) => setPage(p)}
+                onPageSizeChange={(s) => {
+                  setPageSize(s);
+                  setPage(1);
+                }}
+                pageSizes={[5, 10, 20, 50]}
+                page={page}
+                showPageSizeOptions
                 maxW="240px"
               >
                 <ButtonGroup variant="ghost" size="sm" w="full">
