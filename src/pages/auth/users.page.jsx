@@ -160,9 +160,7 @@ export const Users = () => {
                   setPageSize(s);
                   setPage(1);
                 }}
-                pageSizes={[5, 10, 20, 50]}
                 page={page}
-                showPageSizeOptions
                 maxW="240px"
               >
                 <ButtonGroup variant="ghost" size="sm" w="full">
